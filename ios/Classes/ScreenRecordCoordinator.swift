@@ -19,7 +19,7 @@ class ScreenRecordCoordinator: NSObject
         super.init()
         
         viewOverlay.onStopClick = {
-            self.stopRecording()
+            self.stopRecording(onStopped: { _ in})
         }
         
         
@@ -34,11 +34,12 @@ class ScreenRecordCoordinator: NSObject
         }
     }
     
-    func stopRecording()
+    func stopRecording(onStopped: @escaping (Error?)->Void)
     {
         screenRecorder.stopRecording { (error) in
             self.viewOverlay.hide()
             self.recordCompleted?(error)
+            onStopped(error)
         }
     }
     
