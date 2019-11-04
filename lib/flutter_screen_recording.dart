@@ -11,8 +11,8 @@ class FlutterScreenRecording {
     return version;
   }
 
-  static Future<String> get startRecordScreen async {
-    final String path = await _channel.invokeMethod('startRecordScreen');
+  static Future<String>startRecordScreen(Map<String, dynamic> params) async {
+    final String path = await _channel.invokeMethod('startRecordScreen', params);
     return path;
   }
 
