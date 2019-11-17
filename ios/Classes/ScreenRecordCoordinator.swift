@@ -37,11 +37,11 @@ class ScreenRecordCoordinator: NSObject
     
     func startRecording(withFileName fileName: String, recordingHandler: @escaping (Error?) -> Void)
     {
-        self.viewOverlay.show()
         #if targetEnvironment(simulator)
             recordingHandler(RuntimeError("Simulator not supported"))
             return
         #endif
+        self.viewOverlay.show()
         screenRecorder.startRecording(withFileName: fileName) { (error) in
             recordingHandler(error)
         }
