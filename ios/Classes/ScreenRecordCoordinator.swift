@@ -8,37 +8,54 @@
 
 import Foundation
 
+struct RuntimeError: Error {
+    let message: String
+
+    init(_ message: String) {
+        self.message = message
+    }
+
+    public var localizedDescription: String {
+        return message
+    }
+}
 class ScreenRecordCoordinator: NSObject
 {
     let viewOverlay = WindowUtil()
     let screenRecorder = ScreenRecorder()
-    var recordCompleted:((Error?) ->Void)?
     
     override init()
     {
         super.init()
         
         viewOverlay.onStopClick = {
-            self.stopRecording(onStopped: { _ in})
+            
         }
         
         
     }
     
-    func startRecording(withFileName fileName: String, recordingHandler: @escaping (Error?) -> Void,onCompletion: @escaping (Error?)->Void)
+    func startRecording(withFileName fileName: String, recordingHandler: @escaping (Error?) -> Void)
     {
         self.viewOverlay.show()
+        #if targetEnvironment(simulator)
+            recordingHandler(RuntimeError("Simulator not supported"))
+            return
+        #endif
         screenRecorder.startRecording(withFileName: fileName) { (error) in
             recordingHandler(error)
-            self.recordCompleted = onCompletion
         }
     }
     
     func stopRecording(onStopped: @escaping (Error?)->Void)
     {
+        #if targetEnvironment(simulator)
+            self.viewOverlay.hide()
+            onStopped(RuntimeError("Simulator not supported"))
+            return
+        #endif
         screenRecorder.stopRecording { (error) in
             self.viewOverlay.hide()
-            self.recordCompleted?(error)
             onStopped(error)
         }
     }

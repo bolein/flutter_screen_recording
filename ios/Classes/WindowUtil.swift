@@ -53,7 +53,7 @@ class WindowUtil: Overlayable
     func setupViews ()
     {
         initViews()
-        stopButton.setTitle("Stop Recording", for: .normal)
+        stopButton.setTitle("Recording in Progress", for: .normal)
         stopButton.titleLabel?.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
         
         stopButton.addTarget(self, action: #selector(stopRecording), for: UIControlEvents.touchDown)

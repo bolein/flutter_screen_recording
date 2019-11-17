@@ -19,14 +19,13 @@ public class SwiftFlutterScreenRecordingPlugin: NSObject, FlutterPlugin {
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         
         recorder.viewOverlay.stopButtonColor = UIColor.red
-        let randomNumber = arc4random_uniform(9999);
         
-        #if targetEnvironment(simulator)
-            result(FlutterError(code: "SIMULATOR_NOT_SUPPORTED",
-                                message: nil,
-                                details: nil))
-            return
-        #endif
+//        #if targetEnvironment(simulator)
+//            result(FlutterError(code: "SIMULATOR_NOT_SUPPORTED",
+//                                message: nil,
+//                                details: nil))
+//            return
+//        #endif
         
         print(call.method)
         
@@ -45,10 +44,7 @@ public class SwiftFlutterScreenRecordingPlugin: NSObject, FlutterPlugin {
                     }
                     result("success")
                     print("Recording started")
-                }) { (error) in
-                    print("Recording Complete")
-                    debugPrint(error)
-                }
+                })
             } else {
                 result(FlutterError(code: "UNVALID_ARGUMENTS",
                                     message: nil,
