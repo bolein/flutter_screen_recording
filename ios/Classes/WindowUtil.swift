@@ -77,6 +77,8 @@ class WindowUtil: Overlayable
         DispatchQueue.main.async {
             self.stopButton.transform = CGAffineTransform(translationX: 0, y: -30)
             self.stopButton.backgroundColor = self.stopButtonColor
+            self.overlayWindow.isHidden = false
+            self.stopButton.isHidden = false
             self.overlayWindow.makeKeyAndVisible()
             UIView.animate(withDuration: 0.3, animations: {
                 self.stopButton.transform = CGAffineTransform.identity

@@ -23,6 +23,7 @@ class ScreenRecordCoordinator: NSObject
 {
     let viewOverlay = WindowUtil()
     let screenRecorder = ScreenRecorder()
+    var isRecording = false
     
     override init()
     {
@@ -41,8 +42,13 @@ class ScreenRecordCoordinator: NSObject
             recordingHandler(RuntimeError("Simulator not supported"))
             return
         #endif
-        self.viewOverlay.show()
         screenRecorder.startRecording(withFileName: fileName) { (error) in
+            if error == nil {
+                if !self.isRecording {
+                    self.viewOverlay.show()
+                    self.isRecording = true
+                }
+            }
             recordingHandler(error)
         }
     }
@@ -51,11 +57,13 @@ class ScreenRecordCoordinator: NSObject
     {
         #if targetEnvironment(simulator)
             self.viewOverlay.hide()
+            self.isRecording = false
             onStopped(RuntimeError("Simulator not supported"))
             return
         #endif
         screenRecorder.stopRecording { (error) in
             self.viewOverlay.hide()
+            self.isRecording = false
             onStopped(error)
         }
     }
