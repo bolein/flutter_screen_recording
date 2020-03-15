@@ -22,19 +22,40 @@ struct RuntimeError: Error {
 
 class ScreenRecordCoordinator: NSObject
 {
-    let viewOverlay = WindowUtil()
+    var viewOverlay: WindowUtil
     let screenRecorder = ScreenRecorder()
     var isRecording = false
     
     override init()
     {
-        super.init()
         
+        viewOverlay = TopWindowUtil()
+        super.init()
         viewOverlay.onStopClick = {
             
         }
         
         
+    }
+    
+    init(time: Int) {
+        viewOverlay = FullWindowUtil(time: time)
+        super.init()
+        viewOverlay.onStopClick = {
+            
+        }
+        
+    }
+    
+    func setTime(time: Int?) {
+        if let time = time {
+            viewOverlay = FullWindowUtil(time: time)
+        } else {
+            viewOverlay = TopWindowUtil()
+        }
+        viewOverlay.onStopClick = {
+            
+        }
     }
     
     func startRecording(withFileName fileName: String, recordingHandler: @escaping (Error?) -> Void)
