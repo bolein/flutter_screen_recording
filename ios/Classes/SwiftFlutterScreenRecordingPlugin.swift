@@ -33,8 +33,12 @@ public class SwiftFlutterScreenRecordingPlugin: NSObject, FlutterPlugin {
             result("iOS " + UIDevice.current.systemVersion)
             
         }else if(call.method == "startRecordScreen"){
-            if let myArgs = call.arguments as? [String: Any],
+            if  let myArgs = call.arguments as? [String: Any],
                 let fileName = myArgs["fileName"] as? String {
+
+                let seconds = myArgs["duration"] as? NSNumber
+                recorder.setTime(time: seconds?.intValue)
+
                 recorder.startRecording(withFileName: fileName, recordingHandler: { (error) in
                     guard error == nil else {
                         result(FlutterError(code: "RECORDING_STOP_ERROR",
